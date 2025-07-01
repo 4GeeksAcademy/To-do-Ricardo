@@ -29,22 +29,24 @@ const Home = () => {
 	}
 
 	return (
-		<div className="text-center">
+		<div className="text-center ">
 
-			<div>
-				<h1>To do List!</h1>
+			<div className="mt-5" >
+				<h1 className="fs-1 fst-italic text-success-emphasis" >To do List!</h1>
 				<input onChange={e => { setNewTask(e.target.value) }} type="text" value={newTask || " "}
 					onKeyUp={e => { addTask(e.key) }}
 				/>
 			</div>
-
-			{tasks.map((task, index) => {
+			<div className=" m-auto border border-top-0  w-25">
+				{tasks.map((task, index) => {
 				return(<Tarea key={index} descripcion={task} onDelete={() => deleteTask(index)} />)
 			
 			})
 
 			}
 			{tasks.length == 0 && <p> No hay tareas, añadir tareas </p> }
+			</div>
+			<span className="fst-italic">{tasks.length} Items Left</span>
 		</div>
 	);
 };
