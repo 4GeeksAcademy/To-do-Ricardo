@@ -42,7 +42,7 @@ const Home = () => {
 			})
 				.then(resp => {
 					console.log(resp.ok); // Será true si la respuesta es exitosa
-					if(resp.ok){
+					if (resp.ok) {
 						setNewTask()
 					}
 					console.log(resp.status); // El código de estado 201, 300, 400, etc.
@@ -64,8 +64,23 @@ const Home = () => {
 
 	}
 
-	let deleteTask = (index) => {
-		setTasks(tasks.filter((item, i) => index != i))
+	let deleteTask = (id, index) => {
+		/*setTasks(tasks.filter((id i) => index != i)) */
+		fetch('https://playground.4geeks.com/todo/todos/' + id, {
+			method: "DELETE",
+		})
+			.then(resp => {
+				console.log(resp.ok); // Será true si la respuesta es exitosa
+				if (resp.ok) {
+					setTasks(tasks.filter((item,i) => index != i)) 
+				}
+				console.log(resp.status); // El código de estado 201, 300, 400, etc.
+				 // Intentará parsear el resultado a JSON y retornará una promesa donde puedes usar .then para seguir con la lógica
+			})
+			.catch(error => {
+				// Manejo de errores
+				console.log(error);
+			});
 	}
 
 	return (
@@ -79,7 +94,7 @@ const Home = () => {
 			</div>
 			<div className=" m-auto border border-top-0  w-25">
 				{tasks.map((task, index) => {
-					return (<Tarea key={index} descripcion={task.label} onDelete={() => deleteTask(index)} />)
+					return (<Tarea key={index} descripcion={task.label} onDelete={() => deleteTask(task.id, index)} />)
 
 				})
 
