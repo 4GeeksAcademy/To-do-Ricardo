@@ -14,11 +14,7 @@ const Home = () => {
 
 	const [newTask, setNewTask] = useState("");
 
-
-
-
-
-	useEffect( () => {
+	useEffect(() => {
 		const apiURL = "https://playground.4geeks.com/todo/users/ricardo"
 		fetch(apiURL)
 			.then(response => {
@@ -33,7 +29,37 @@ const Home = () => {
 
 	let addTask = (key) => {
 		if (key === "Enter") {
-			setTasks([...tasks, newTask.trim()])
+
+			fetch('https://playground.4geeks.com/todo/todos/ricardo', {
+				method: "POST",
+				body: JSON.stringify({
+					"label": newTask,
+					"is_done": false,
+				}),
+				headers: {
+					"Content-Type": "application/json"
+				}
+			})
+				.then(resp => {
+					console.log(resp.ok); // Será true si la respuesta es exitosa
+					if(resp.ok){
+						setNewTask()
+					}
+					console.log(resp.status); // El código de estado 201, 300, 400, etc.
+					return resp.json(); // Intentará parsear el resultado a JSON y retornará una promesa donde puedes usar .then para seguir con la lógica
+				})
+				.then(data => {
+					// Aquí es donde debe comenzar tu código después de que finalice la búsqueda
+					console.log(data); // Esto imprimirá en la consola el objeto exacto recibido del servidor
+					setTasks([...tasks, data])
+				})
+				.catch(error => {
+					// Manejo de errores
+					console.log(error);
+				});
+
+
+			/*setTasks([...tasks, newTask.trim()])*/
 		}
 
 	}
